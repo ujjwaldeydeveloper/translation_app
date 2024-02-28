@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:trsnslation_app/domain/translation_data_model.dart';
+import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -37,11 +40,78 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<Data> _availableData = [];
 
+  final localJson = {
+    "statusCode": 200,
+    "message": "English data that need translation to hindi",
+    "data": [
+      {
+        "id": 11989,
+        "value": "1 Year Service Warranty & 5 Years Plywood Warranty",
+        "createdAt": "2024-01-06 12:08:11",
+        "updatedAt": "2024-01-06 12:08:11"
+      },
+      {
+        "id": 11990,
+        "value":
+            "Customer Should inform about the Changes (if any Design & colour) before\nproduction or else Customer should pay Extra",
+        "createdAt": "2024-01-06 12:08:11",
+        "updatedAt": "2024-01-06 12:08:11"
+      },
+      {
+        "id": 11991,
+        "value":
+            "Material will be delivered 3-4 weeks the date of Confirmation of Order",
+        "createdAt": "2024-01-06 12:08:11",
+        "updatedAt": "2024-01-06 12:08:11"
+      },
+      {
+        "id": 11992,
+        "value":
+            "Quotation cant be changed / revised once accepted by the customer",
+        "createdAt": "2024-01-06 12:08:11",
+        "updatedAt": "2024-01-06 12:08:11"
+      },
+      {
+        "id": 11993,
+        "value":
+            "If any extra works are needed then it should be paid by customer",
+        "createdAt": "2024-01-06 12:08:11",
+        "updatedAt": "2024-01-06 12:08:11"
+      },
+      {
+        "id": 11994,
+        "value":
+            "Custom Handles will be charged extra.Handle price may vary based of designs &\nspecifications",
+        "createdAt": "2024-01-06 12:08:11",
+        "updatedAt": "2024-01-06 12:08:11"
+      },
+      {
+        "id": 11995,
+        "value": "Once the Project is confirmed, the amount cannot be refunded",
+        "createdAt": "2024-01-06 12:08:11",
+        "updatedAt": "2024-01-06 12:08:11"
+      },
+      {
+        "id": 11996,
+        "value": "This Quote will be valid only for 15 Days",
+        "createdAt": "2024-01-06 12:08:11",
+        "updatedAt": "2024-01-06 12:08:11"
+      },
+      {
+        "id": 11997,
+        "value":
+            "Any additional work which is out of the quotation in any aspects is to be paid extra by\nthe customer",
+        "createdAt": "2024-01-06 12:08:11",
+        "updatedAt": "2024-01-06 12:08:11"
+      }
+    ]
+  };
+
   // bool showHindi = false;
   void loadData() async {
-    final res = await rootBundle.loadString('local_data.json');
+    // final res = await rootBundle.loadString('assets/local_data.json');
     final translationData =
-        TranslationDataModel.fromJson(jsonDecode(res) as Map<String, dynamic>);
+        TranslationDataModel.fromJson(localJson as Map<String, dynamic>);
 
     setState(() {
       _availableData = translationData.data!;
@@ -77,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class CardItemWidget extends StatefulWidget {
-  const CardItemWidget({super.key,required this.modelInstance});
+  const CardItemWidget({super.key, required this.modelInstance});
   final Data modelInstance;
 
   @override
@@ -91,6 +161,16 @@ class _CardItemWidgetState extends State<CardItemWidget> {
     showHindi = false;
     super.initState();
   }
+
+  Future<String> hindiTranslation(String str) async {
+    OnDeviceTranslator onDeviceTranslator = OnDeviceTranslator(
+        sourceLanguage: TranslateLanguage.english,
+        targetLanguage: TranslateLanguage.hindi);
+    String response = await onDeviceTranslator.translateText(str);
+    onDeviceTranslator.close();
+    return response;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -110,15 +190,26 @@ class _CardItemWidgetState extends State<CardItemWidget> {
                       widget.modelInstance.value ?? '',
                     ),
                   ),
-                  Visibility(
-                    visible: showHindi,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        widget.modelInstance.value ?? '',
-                      ),
-                    ),
-                  ),
+                  showHindi
+                      ? FutureBuilder(
+                          future: hindiTranslation(
+                              widget.modelInstance.value ?? ''),
+                          builder: (context, AsyncSnapshot<String> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  snapshot.data ?? 'jhgjh',
+                                ),
+                              );
+                            } else if (snapshot.connectionState ==
+                                ConnectionState.none) {
+                              return const Text("No data");
+                            }
+                            return const CircularProgressIndicator();
+                          })
+                      : Container(),
                   InkWell(
                     onTap: () {
                       setState(() {
