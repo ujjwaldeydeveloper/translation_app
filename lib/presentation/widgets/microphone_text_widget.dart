@@ -10,7 +10,6 @@ class MicroPhoneTextWidget extends StatefulWidget {
 }
 
 class _MicroPhoneTextWidgetState extends State<MicroPhoneTextWidget> {
-
   late stt.SpeechToText _speech;
   bool _isListening = false;
   String _text = 'Press the button and start speaking';
@@ -22,7 +21,7 @@ class _MicroPhoneTextWidgetState extends State<MicroPhoneTextWidget> {
     _speech = stt.SpeechToText();
   }
 
-   void _listen() async {
+  void _listen() async {
     if (!_isListening) {
       bool available = await _speech.initialize(
         onStatus: (val) => print('onStatus: $val'),
@@ -52,12 +51,12 @@ class _MicroPhoneTextWidgetState extends State<MicroPhoneTextWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Align(alignment: Alignment.topLeft, child: Text(_text)),
           Align(
-            alignment: Alignment.topLeft,
-            child: Text(_text)),
-          Align(
-            alignment: Alignment.topRight,
-            child: ElevatedButton(onPressed: _listen, child: Icon(_isListening ? Icons.mic : Icons.mic_off))),
+              alignment: Alignment.topRight,
+              child: ElevatedButton(
+                  onPressed: _listen,
+                  child: Icon(_isListening ? Icons.mic : Icons.mic_off))),
         ],
       ),
     );

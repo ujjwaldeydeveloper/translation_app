@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:trsnslation_app/domain/translation_data_model.dart';
+// ignore: depend_on_referenced_packages
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-
-import 'package:speech_to_text/speech_to_text.dart' as stt;
-
 
 class CardItemWidget extends StatefulWidget {
   const CardItemWidget({super.key, required this.modelInstanceValue});
@@ -56,8 +48,7 @@ class _CardItemWidgetState extends State<CardItemWidget> {
                   ),
                   showHindi
                       ? FutureBuilder(
-                          future: hindiTranslation(
-                              widget.modelInstanceValue),
+                          future: hindiTranslation(widget.modelInstanceValue),
                           builder: (context, AsyncSnapshot<String> snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.done) {

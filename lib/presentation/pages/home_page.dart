@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:trsnslation_app/data/api_service.dart';
 
 import '../../domain/translation_data_model.dart';
-import '../constant.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/edit_text_widget.dart';
 import '../utills/global.dart' as globals;
@@ -47,9 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ));
         },
       ).then((value) {
-        setState(() {
-
-        });
+        setState(() {});
         // Navigator.of(context).pop();
         // CardItemWidget(
         //   modelInstanceValue: 'value',

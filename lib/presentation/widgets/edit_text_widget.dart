@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:trsnslation_app/presentation/widgets/card_widget.dart';
 import '../utills/global.dart' as globals;
 
 class TextSubmitWidget extends StatefulWidget {
