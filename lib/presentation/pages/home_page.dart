@@ -5,6 +5,7 @@ import '../constant.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/edit_text_widget.dart';
 import '../utills/global.dart' as globals;
+import '../widgets/microphone_text_widget.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -39,7 +40,12 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (BuildContext context) {
           return SizedBox(
               height: MediaQuery.of(context).size.height * 0.5,
-              child: const TextSubmitWidget());
+              child: const Column(
+                children: [
+                  TextSubmitWidget(),
+                  MicroPhoneTextWidget(),
+                ],
+              ));
         },
       ).then((value) {
         setState(() {
