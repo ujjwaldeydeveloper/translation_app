@@ -9,8 +9,6 @@ part of 'translation_data_model.dart';
 TranslationDataModel _$TranslationDataModelFromJson(
         Map<String, dynamic> json) =>
     TranslationDataModel(
-      statusCode: json['statusCode'] as int?,
-      message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => Data.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -19,8 +17,6 @@ TranslationDataModel _$TranslationDataModelFromJson(
 Map<String, dynamic> _$TranslationDataModelToJson(
         TranslationDataModel instance) =>
     <String, dynamic>{
-      'statusCode': instance.statusCode,
-      'message': instance.message,
       'data': instance.data,
     };
 

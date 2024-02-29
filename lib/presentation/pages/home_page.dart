@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trsnslation_app/data/api_service.dart';
 
 import '../../domain/translation_data_model.dart';
 import '../constant.dart';
@@ -18,11 +19,9 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Data> _availableData = [];
 
   void loadData() async {
-    final translationData =
-        TranslationDataModel.fromJson(Constatants.localJson);
-
+    dynamic apiResponse = await ApiService().getTranslationData();
     setState(() {
-      _availableData = translationData.data!;
+      _availableData = apiResponse.data!;
     });
   }
 

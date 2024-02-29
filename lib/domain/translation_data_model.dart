@@ -4,16 +4,10 @@ part 'translation_data_model.g.dart';
 
 @JsonSerializable()
 class TranslationDataModel {
-  @JsonKey(name: "statusCode")
-  int? statusCode;
-  @JsonKey(name: "message")
-  String? message;
   @JsonKey(name: "data")
   List<Data>? data;
 
   TranslationDataModel({
-    this.statusCode,
-    this.message,
     this.data,
   });
 
